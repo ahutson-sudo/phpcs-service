@@ -1,0 +1,19 @@
+<!doctype html><meta charset="utf-8">
+<title>PHPCS Fix Test</title>
+<p>Paste PHP below, click the button, and it will return the corrected code.</p>
+<textarea id="t" style="width:100%;height:220px"><?php echo"Hello"; ?></textarea>
+<p><button id="fix">Fix & Return Code</button></p>
+<pre id="out" style="white-space:pre-wrap;background:#f6f6f6;padding:10px;border:1px solid #ddd">Results will appear here…</pre>
+<script>
+fix.onclick = async () => {
+  out.textContent = "Fixing...";
+  const res = await fetch("fix.php", {
+    method:"POST",
+    headers:{ "content-type":"application/json" },
+    body: JSON.stringify({ code: t.value, filename: "snippet.php" })
+  });
+  const data = await res.json();
+  t.value = data.fixedCode || t.value;
+  out.textContent = JSON.stringify(data.remaining || {}, null, 2);
+};
+</script>
